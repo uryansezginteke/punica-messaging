@@ -1,5 +1,5 @@
 {
-  "name": "@punica/messaging-client",
+  "name": "@punica/messaging-server",
   "version": "1.0.0",
   "description": "Messaging",
   "author": {
@@ -9,7 +9,7 @@
   },
   "keywords": [
     "messaging",
-    "client"
+    "server"
   ],
   "private": false,
   "license": "MIT",
@@ -34,6 +34,14 @@
     "path": "../../scripts/packages"
   },
   "dependencies": {
-    "@punica/common": "^1.0.0"
+    "ws": "^8.3.0"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.8.2",
+    "@types/node": "^18.7.14",
+    "@types/ws": "^8.2.2",
+    "amqplib": "^0.10.2",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.4.0"
   }
 }

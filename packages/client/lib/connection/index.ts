@@ -30,13 +30,17 @@ class Connection extends BaseListener {
    *
    * @param e
    */
-  private onError = (e: any) => {};
+  private onError = (e: any) => {
+    console.log(e);
+  };
 
   /**
    *
    * @param e
    */
   private onClose = (e: any) => {
+    console.log(e);
+
     switch (e.code) {
       case 1006:
         break;

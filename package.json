@@ -39,6 +39,7 @@
     "scripty": "^2.1.0",
     "ts-jest": "^28.0.7",
     "typescript": "^4.6.4"
+
   },
   "dependencies": {
     "global": "^4.4.0"
