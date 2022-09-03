@@ -1,12 +1,18 @@
 import messages from './messages';
 import WebSocket from 'ws';
 import { IncomingMessage } from 'http';
-import { addUser, deleteUser } from './user';
-import { IMessageData } from './model';
-import { deleteTopic } from './topic';
+import { IMessageData } from './types';
+import {
+  addUser,
+  deleteUser,
+  deleteUserFromTopics,
+  deleteUserTopic
+} from './model';
+
+const PORT = 8080;
 
 try {
-  const webSocketServer = new WebSocket.Server({ port: 8080 });
+  const webSocketServer = new WebSocket.Server({ port: PORT });
 
   /**
    *
@@ -27,7 +33,7 @@ try {
       const handler = messages[message.type];
 
       if (!handler) {
-        console.error('type no recognized');
+        return;
       }
 
       handler(key, message);
@@ -38,7 +44,10 @@ try {
      */
     const onClose = () => {
       deleteUser(key);
-      deleteTopic(key);
+      deleteUserFromTopics(key);
+      deleteUserTopic(key);
+
+      //TODO disconnect empty topic
     };
 
     ws.on('message', onMessage);

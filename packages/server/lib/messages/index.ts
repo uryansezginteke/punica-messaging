@@ -1,13 +1,11 @@
-import { IMessage } from '../model';
+import { IMessage } from '../types';
 import topic from './topic';
-import chat from './chat';
 
 /**
  *
  */
 const messages: IMessage = {
-  topic,
-  chat
+  topic
 };
 
 export default messages;

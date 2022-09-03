@@ -1,9 +1,9 @@
-import { IObserver } from '.';
+import { IMessage, IObserver } from '.';
 
 interface ISubject<T> {
   attach(observer: IObserver<T>): void;
   detach(observer: IObserver<T>): void;
-  notify(topic: string, data: any): void;
+  notify(message: IMessage): void;
 }
 
 export default ISubject;

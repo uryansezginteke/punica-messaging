@@ -1,4 +1,4 @@
-import { MessageHandler } from './index';
+import { MessageHandler } from '.';
 
 interface IMessage {
   [key: string]: MessageHandler;

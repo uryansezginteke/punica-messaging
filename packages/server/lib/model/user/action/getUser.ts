@@ -1,5 +1,5 @@
-import WebSocket from "ws";
-import { userMap } from "../index";
+import WebSocket from 'ws';
+import { userMap } from '..';
 
 /**
  *
@@ -8,11 +8,7 @@ import { userMap } from "../index";
  */
 const action = (userKey: string): WebSocket => {
   if (!userKey) {
-    throw new Error("userKey cannot be null");
-  }
-
-  if (!userMap.has(userKey)) {
-    throw new Error("user not found");
+    throw new Error('userKey cannot be null');
   }
 
   return userMap.get(userKey);

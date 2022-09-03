@@ -1,9 +1,9 @@
-import { IObserver, ISubject } from './model';
+import { IMessage, IObserver, ISubject } from './model';
 import Connection from './connection';
 
 class TopicManager implements ISubject<any> {
   private _url: string;
-  private _connection: Connection;
+  private _connection: Connection = Connection.getInstance();
   private _topicMap: Map<string, Array<(data: any) => void>>;
   private static _instance: TopicManager;
 
@@ -12,17 +12,19 @@ class TopicManager implements ISubject<any> {
    * @param e
    */
   private onMessage = (e: any) => {
-    const data = JSON.parse(e.data as string);
-    const { topic, value } = data;
+    const { type, data } = JSON.parse(e.data as string);
 
-    this.notify(topic, value);
+    this.notify({ type, data });
   };
 
   /**
    *
    */
   private connect() {
-    this._connection = new Connection();
+    if (this._connection.isConnect()) {
+      return;
+    }
+
     this._connection.on(Connection.EVENT_MESSAGE, this.onMessage);
     this._connection.connect(this._url);
   }
@@ -33,7 +35,6 @@ class TopicManager implements ISubject<any> {
   private disconnect() {
     this._connection.off(Connection.EVENT_MESSAGE, this.onMessage);
     this._connection.disconnect();
-    this._connection = null;
   }
 
   /**
@@ -160,14 +161,13 @@ class TopicManager implements ISubject<any> {
 
   /**
    *
-   * @param topic
-   * @param data
+   * @param message
    */
-  public notify(topic: string, data: any): void {
-    const methods = this._topicMap.get(topic);
+  public notify(message: IMessage): void {
+    const methods = this._topicMap.get(message.type);
 
     methods?.forEach((u) => {
-      u(data);
+      u(message.data);
     });
   }
 }

@@ -1,4 +1,4 @@
-import { topicMap } from "..";
+import { topicMap } from '..';
 
 /**
  *
@@ -8,21 +8,22 @@ import { topicMap } from "..";
  */
 const action = (userKey: string, topics: Array<string>): Array<string> => {
   if (!userKey) {
-    throw new Error("userKey cannot be null");
+    throw new Error('userKey cannot be null');
   }
 
   if (!topics) {
-    throw new Error("topics cannot be null");
+    throw new Error('topics cannot be null');
   }
 
-  const newTopic: Array<string> = [];
+  const newTopics: Array<string> = [];
 
   topics.forEach((topic: string) => {
     let users = topicMap.get(topic);
+
     if (!users) {
       users = [];
 
-      newTopic.push(topic);
+      newTopics.push(topic);
     }
 
     if (!users.includes(userKey)) {
@@ -32,7 +33,7 @@ const action = (userKey: string, topics: Array<string>): Array<string> => {
     topicMap.set(topic, users);
   });
 
-  return newTopic;
+  return newTopics;
 };
 
 export default action;

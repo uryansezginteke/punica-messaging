@@ -1,10 +1,12 @@
 import { BaseListener } from '@punica/common';
+import { IMessage } from '../model';
 
 class Connection extends BaseListener {
   static EVENT_MESSAGE: string = 'WEB_SOCKET_MESSAGE';
 
   private _webSocket: WebSocket;
-  private _messages: Array<any>;
+  private _messages: Map<string, IMessage>;
+  private static _instance: Connection;
 
   /**
    *
@@ -18,11 +20,12 @@ class Connection extends BaseListener {
    *
    */
   private onOpen = () => {
-    if (this._messages.length > 0) {
-      this._messages.forEach((message) => {
-        this.sendMessage(message);
+    if (this._messages.keys.length > 0) {
+      this._messages.forEach((data) => {
+        this.sendMessage(data);
       });
-      this._messages = [];
+
+      this._messages = new Map<string, IMessage>();
     }
   };
 
@@ -70,17 +73,30 @@ class Connection extends BaseListener {
   /**
    *
    */
-  public constructor() {
+  private constructor() {
     super();
+  }
+
+  /**
+   *
+   * @returns
+   */
+  public static getInstance(): Connection {
+    if (!Connection._instance) {
+      Connection._instance = new Connection();
+    }
+
+    return Connection._instance;
   }
 
   /**
    *
    * @param data
    */
-  public sendMessage(data: any) {
+  public sendMessage(data: IMessage) {
     if (this._webSocket.readyState != WebSocket.OPEN) {
-      this._messages.push(data);
+      this._messages.set(data.type, data);
+
       return;
     }
 
@@ -102,9 +118,21 @@ class Connection extends BaseListener {
    */
   public connect(url: string) {
     this._webSocket = new WebSocket(url);
-    this._messages = [];
+    this._messages = new Map<string, IMessage>();
 
     this.addListener();
+  }
+
+  /**
+   *
+   * @returns
+   */
+  public isConnect(): boolean {
+    if (!this._webSocket) {
+      return false;
+    }
+
+    return this._webSocket.readyState == WebSocket.OPEN;
   }
 }
 

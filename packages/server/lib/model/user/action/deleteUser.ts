@@ -1,4 +1,4 @@
-import { userMap } from "../index";
+import { userMap } from '..';
 
 /**
  *
@@ -6,7 +6,7 @@ import { userMap } from "../index";
  */
 const action = (userKey: string): void => {
   if (!userMap.has(userKey)) {
-    throw new Error("userKey not found");
+    throw new Error('userKey not found');
   }
 
   userMap.delete(userKey);

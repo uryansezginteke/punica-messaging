@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import { userMap } from '../index';
+import { userMap } from '..';
 
 /**
  *
